@@ -5,7 +5,6 @@
 #include <cstdlib>
 #include <vector>
 #include "moviesdb.h"
-
 #include <cstring>
 
 std::vector<std::string> movies;
@@ -15,7 +14,6 @@ mysqlpp::Query connect() {
     mysqlpp::Connection myDB("cse381", "localhost", "cse381", "m1am1");
     // Create a query 
     mysqlpp::Query query = myDB.query();
-    std::cout << "Connected to DB\n" << std::endl;
     return myDB.query();
 }
 
@@ -45,11 +43,33 @@ void getMovieListing(std::vector<std::string> &movies) {
 }
 
 void getMovieInfo(const char * path, std::string &buf) {
-	buf += "title = " + std::string(path) + "\n";
+/*
+    mysqlpp::Connection myDB("cse381", "localhost", "cse381", "m1am1"); 
+    mysqlpp::Query query = myDB.query();
+    query << "SELECT title,tagline, genre,release_date,budget,revenue FROM movies WHERE title = Avatar";
+    query.parse();
+    mysqlpp::StoreQueryResult results = query.store();
+    for(size_t row = 0; (row < results.size()); row++) {
+        std::string title = results[row][0].c_str();
+        std::string tagline = results[row][1].c_str();
+        std::string genre = results[row][2].c_str();
+        std::string release_date = results[row][3].c_str();
+        std::string budget = results[row][4].c_str();
+        std::string revenue= results[row][5].c_str();
+        std::cout << "title: " << title << "\n";
+        std::cout << "tagline: " << tagline << "\n";
+        std::cout << "genre: " << genre << "\n";
+        std::cout << "release_date: " << release_date << "\n";
+        std::cout << "budget: " << budget << "\n";
+        std::cout << "revenue: " << revenue << "\n";
+}
+  */  
+    buf += "title = " + std::string(path) + "\n";
 }
 
 
-/*
+//main() created for testing purposes only
+
 int main(int argc, char *argv[]) {
    if( connect() ){
       std::cout << "Connected" << "\n";   }else {
@@ -59,10 +79,28 @@ int main(int argc, char *argv[]) {
     (void) argv;
    // getMovieListing(movies);
     //movieList();
+    std::string searchTitle = "";
+    std::cout << "Enter a movie title for details: \n";
+    std::getline(std::cin, searchTitle);
+    std::cout << "Searching for " << searchTitle << "... ... \n";
+    mysqlpp::Connection myDB("cse381", "localhost", "cse381", "m1am1");
+    mysqlpp::Query query = myDB.query();
+    query << "SELECT title,tagline,genre,release_date,budget,revenue FROM movies WHERE movies.title = %0q";
+    query.parse();
+    mysqlpp::StoreQueryResult results = query.store(searchTitle);
+    for(size_t row = 0; (row < results.size()); row++) {
+        std::string title = results[row][0].c_str();
+        std::string tagline = results[row][1].c_str();
+        std::string genre = results[row][2].c_str();
+        std::string release_date = results[row][3].c_str();
+        std::string budget = results[row][4].c_str();
+        std::string revenue= results[row][5].c_str();
+        std::cout << "title: " << title << "\n";
+        std::cout << "tagline: " << tagline << "\n";
+        std::cout << "genre: " << genre << "\n";
+        std::cout << "release_date: " << release_date << "\n";
+        std::cout << "budget: " << budget << "\n";
+        std::cout << "revenue: " << revenue << "\n";
+    }
     return 0;
 }
-*/
-
-
-
-
