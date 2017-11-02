@@ -18,6 +18,8 @@ mysqlpp::Query connect() {
     std::cout << "Connected to DB\n" << std::endl;
     return myDB.query();
 }
+
+/*
 mysqlpp::Query movieList(){
     mysqlpp::Connection myDB("cse381", "localhost", "cse381", "m1am1");
     mysqlpp::Query query = myDB.query();
@@ -26,7 +28,7 @@ mysqlpp::Query movieList(){
     mysqlpp::StoreQueryResult results = query.store();
     return myDB.query();
 }
-
+*/
 
 void getMovieListing(std::vector<std::string> &movies) {
     mysqlpp::Connection myDB("cse381", "localhost", "cse381", "m1am1"); 
@@ -46,10 +48,11 @@ void getMovieInfo(const char * path, std::string &buf) {
 	buf += "title = " + std::string(path) + "\n";
 }
 
+
+/*
 int main(int argc, char *argv[]) {
    if( connect() ){
-      std::cout << "Connected" << "\n";
-   }else {
+      std::cout << "Connected" << "\n";   }else {
       std::cout << "Error connecting \n";
     }
     (void) argc;
@@ -58,7 +61,7 @@ int main(int argc, char *argv[]) {
     //movieList();
     return 0;
 }
-
+*/
 
 
 
