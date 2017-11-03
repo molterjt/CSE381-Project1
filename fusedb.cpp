@@ -93,16 +93,18 @@ int simple_read(const char *path, char *buf, size_t size, off_t offset,
 		struct fuse_file_info *fi) {
 	// Tell compiler we are intentionally not using 1 parameter
 	(void) fi;
-	(void) path;
+	//(void) path;    
+        std::string movieBuf = std::string(buf);
 	// Get the file information for this path
+        getMovieInfo(path, movieBuf);
 	// Get the information for the file
 	// Copy the necessary information into the buffer
-
+        
 	const int count = fmin(4096 - offset, size);
 	if (count > 0) {
 		int i;
 		for(i = 0; (i < count); i++) {
-			buf[i] = 'a';
+			buf[i]=movieBuf[i];
 		}
 	}
 	for (unsigned int i=count;i<size;i++)
