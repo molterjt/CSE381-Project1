@@ -90,31 +90,29 @@ int simple_open(const char *path, struct fuse_file_info *fi) {
 }
 
 int simple_read(const char *path, char *buf, size_t size, off_t offset,
-		struct fuse_file_info *fi) {
-	// Tell compiler we are intentionally not using 1 parameter
-	(void) fi;
-	//(void) path;    
+                struct fuse_file_info *fi) {
+        // Tell compiler we are intentionally not using 1 parameter
+        (void) fi;
+        //(void) path;
+        // Get the file information for this path
+        // Get the information for the file
+        // Copy the necessary information into the buffer
         std::string movieBuf = std::string(buf);
-	// Get the file information for this path
+        // Get the file information for this path
         getMovieInfo(path, movieBuf);
-	// Get the information for the file
-	// Copy the necessary information into the buffer
-        
-	const int count = fmin(4096 - offset, size);
-	if (count > 0) {
-		unsighned int i;
-		//for(i = 0; (i < count); i++) {
-		for(i = 0; (i < movieBuf.size()); i++) {
-			buf[i]=movieBuf[i];
-		}
-	}
-	//for (unsigned int i=count;i<size;i++)
-	//	buf[i] = ' ';
-	for (unsigned int i = movieBuf.size();i<size;i++)
-                buf[i] = NULL;
 
-	return count;
+        const int count = fmin(4095 - offset, size);
+        //if (count > 0) {
+                unsigned int i;
+        for(i = 0; (i < movieBuf.size()); i++) {
+                        buf[i] = movieBuf[i];
+                }
+        //}
+        for (unsigned int i = movieBuf.size();i<size;i++)
+                buf[i] = NULL;
+        return count;
 }
+
 
 int simple_write(const char *path, const char *buf, size_t size, off_t offset,
 		struct fuse_file_info *fi) {
