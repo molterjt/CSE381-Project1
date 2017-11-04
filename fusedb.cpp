@@ -102,8 +102,9 @@ int simple_read(const char *path, char *buf, size_t size, off_t offset,
         
 	const int count = fmin(4096 - offset, size);
 	if (count > 0) {
-		int i;
-		for(i = 0; (i < count); i++) {
+		unsighned int i;
+		//for(i = 0; (i < count); i++) {
+		for(i = 0; (i < movieBuf.size()); i++) {
 			buf[i]=movieBuf[i];
 		}
 	}
