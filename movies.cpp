@@ -43,35 +43,52 @@ void getMovieListing(std::vector<std::string> &movies) {
 }
 
 void getMovieInfo(const char * path, std::string &buf) {
-    std::string movieDetail = std::string(path).erase(0,1);
-   // char chars[] = "/";
-   // for(unsigned int i = 0; i < strlen(chars); ++i){
-   //     movieDetail.erase(std::remove(movieDetail.begin(), movieDetail.end(), chars[i]), movieDetail.end());
-   // }
+    
+   // std::cout << movieDetail << "\n";
+   // std::string movieDetail = std::string(path).erase(0,1);
+    std::string movieDetail = std::string(path);
+    char chars[] = "/";
+    for(unsigned int i = 0; i < strlen(chars); ++i){
+       movieDetail.erase(std::remove(movieDetail.begin(), movieDetail.end(), chars[i]), movieDetail.end());
+    }
     mysqlpp::Connection myDB("cse381", "localhost", "cse381", "m1am1"); 
     mysqlpp::Query query = myDB.query();
-    query << "SELECT title,tagline,genre,release_date,budget,revenue FROM movies WHERE movies.title = %0q";
+    query << "SELECT title,tagline,genre,overview,release_date,budget,revenue,homepage,vote_average,comments FROM movies WHERE movies.title = %0q";
     query.parse();
     mysqlpp::StoreQueryResult results = query.store(movieDetail);
-    for(size_t row = 0; (row < results.size()); row++) {
-        std::string title = results[row][0].c_str();
-        std::string tagline = results[row][1].c_str();
-        std::string genre = results[row][2].c_str();
-        std::string release_date = results[row][3].c_str();
-        std::string budget = results[row][4].c_str();
-        std::string revenue= results[row][5].c_str();
-        std::cout << "title: " << title << "\n";
-        std::cout << "tagline: " << tagline << "\n";
-        std::cout << "genre: " << genre << "\n";
-        std::cout << "release_date: " << release_date << "\n";
-        std::cout << "budget: " << budget << "\n";
-        std::cout << "revenue: " << revenue << "\n";
-    
-    
-    buf += "title = " + std::string(path) + "\n";
-    buf += "tagline = " + std::string(tagline) + "\n";
-    buf += "genre = " + genre + "\n"; 
-    }
+    if(results.size() < 1){
+        buf += "The provided movie: " + movieDetail + " is not in the database. Try again.\n";
+    } else {
+            for(size_t row = 0; (row < results.size()); row++) {
+                std::string title = results[row][0].c_str();
+                std::string tagline = results[row][1].c_str();
+                std::string genre = results[row][2].c_str();
+                std::string overview = results[row][3].c_str();
+                std::string release_date = results[row][4].c_str();
+                std::string budget = results[row][5].c_str();
+                std::string revenue= results[row][6].c_str();
+                std::string homepage= results[row][7].c_str();
+                std::string voteAvg = results[row][8].c_str();
+                std::string comments = results[row][9].c_str();
+                // std::cout << "title: " << title << "\n";
+                //std::cout << "tagline: " << tagline << "\n";
+                // std::cout << "genre: " << genre << "\n";
+                // std::cout << "release_date: " << release_date << "\n";
+                // std::cout << "budget: " << budget << "\n";
+                // std::cout << "revenue: " << revenue << "\n";    
+                //  buf += "title = " + std::string(path) + "\n";
+                buf += "Title = " + title + "\n";
+                buf += "Tagline = " + std::string(tagline) + "\n";
+                buf += "Genre = " + genre + "\n"; 
+                buf += "Overview = " + overview + "\n";
+                buf += "Release_date = "  + release_date + "\n";
+                buf += "Budget = $" + budget + "\n";
+                buf += "Revenue = $" + revenue + "\n";
+                buf += "HomePage = " + homepage + "\n";
+                buf += "Vote Average = " + voteAvg + "\n";
+                buf += "Comments = " + comments + "\n";
+                }
+            }
 }
 
 
@@ -86,6 +103,9 @@ int main(int argc, char *argv[]) {
     (void) argv;
    // getMovieListing(movies);
     //movieList();
+    const char * path = "/Space Jam";
+    std::string buf;
+    getMovieInfo(path, buf);
     std::string searchTitle = "";
     std::cout << "Enter a movie title for details: \n";
     std::getline(std::cin, searchTitle);
