@@ -108,9 +108,11 @@ int simple_read(const char *path, char *buf, size_t size, off_t offset,
 			buf[i]=movieBuf[i];
 		}
 	}
-	for (unsigned int i=count;i<size;i++)
-		buf[i] = ' ';
-	
+	//for (unsigned int i=count;i<size;i++)
+	//	buf[i] = ' ';
+	for (unsigned int i = movieBuf.size();i<size;i++)
+                buf[i] = NULL;
+
 	return count;
 }
 
