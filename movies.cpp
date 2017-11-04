@@ -56,6 +56,7 @@ void getMovieInfo(const char * path, std::string &buf) {
     query << "SELECT title,tagline,genre,overview,release_date,budget,revenue,homepage,vote_average,comments FROM movies WHERE movies.title = %0q";
     query.parse();
     mysqlpp::StoreQueryResult results = query.store(movieDetail);
+<<<<<<< HEAD
     if(results.size() < 1){
         buf += "The provided movie: " + movieDetail + " is not in the database. Try again.\n";
     } else {
@@ -89,6 +90,31 @@ void getMovieInfo(const char * path, std::string &buf) {
                 buf += "Comments = " + comments + "\n";
                 }
             }
+=======
+    for(size_t row = 0; (row < results.size()); row++) {
+        std::string title = results[row][0].c_str();
+        std::string tagline = results[row][1].c_str();
+        std::string genre = results[row][2].c_str();
+        std::string release_date = results[row][3].c_str();
+        std::string budget = results[row][4].c_str();
+        std::string revenue= results[row][5].c_str();
+        std::cout << "title: " << title << "\n";
+        std::cout << "tagline: " << tagline << "\n";
+        std::cout << "genre: " << genre << "\n";
+        std::cout << "release_date: " << release_date << "\n";
+        std::cout << "budget: " << budget << "\n";
+        std::cout << "revenue: " << revenue << "\n";
+    
+    
+    buf += "title = " + std::string(path) + "\n";
+    buf += "tagline = " + std::string(tagline) + "\n";
+    buf += "genre = " + genre + "\n";
+    buf += "release_date = " + release_date + "\n";
+    buf += "budget = $" + budget + "\n";
+    buf += "revenue = $" + revenue + "\n";
+
+    }
+>>>>>>> 9148b05d1828885c6291fec668efeb88a1d5f38a
 }
 
 

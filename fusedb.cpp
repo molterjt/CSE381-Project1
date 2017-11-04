@@ -90,18 +90,33 @@ int simple_open(const char *path, struct fuse_file_info *fi) {
 }
 
 int simple_read(const char *path, char *buf, size_t size, off_t offset,
+<<<<<<< HEAD
 		struct fuse_file_info *fi) {
 	// Tell compiler we are intentionally not using 1 parameter
 	(void) fi;
 	//(void) path;    
        // std::string movieBuf(buf, size);
         memset(buf, 0, sizeof(buf));
+=======
+                struct fuse_file_info *fi) {
+        // Tell compiler we are intentionally not using 1 parameter
+        (void) fi;
+        //(void) path;
+        // Get the file information for this path
+        // Get the information for the file
+        // Copy the necessary information into the buffer
+>>>>>>> 9148b05d1828885c6291fec668efeb88a1d5f38a
         std::string movieBuf = std::string(buf);
-	// Get the file information for this path
+        // Get the file information for this path
         getMovieInfo(path, movieBuf);
+<<<<<<< HEAD
 	// Get the information for the file
 	// Copy the necessary information into the buffer
          const int count = fmin(4095 - offset, size);
+=======
+
+        const int count = fmin(4095 - offset, size);
+>>>>>>> 9148b05d1828885c6291fec668efeb88a1d5f38a
         //if (count > 0) {
                 unsigned int i;
         for(i = 0; (i < movieBuf.size()); i++) {
@@ -111,6 +126,7 @@ int simple_read(const char *path, char *buf, size_t size, off_t offset,
         for (unsigned int i = movieBuf.size();i<size;i++)
                 buf[i] = NULL;
         return count;
+<<<<<<< HEAD
 /*        
 	const int count = fmin(4096 - offset, size);
 	if (count > 0) {
@@ -128,7 +144,10 @@ int simple_read(const char *path, char *buf, size_t size, off_t offset,
 	
 	return count;
 */
+=======
+>>>>>>> 9148b05d1828885c6291fec668efeb88a1d5f38a
 }
+
 
 int simple_write(const char *path, const char *buf, size_t size, off_t offset,
 		struct fuse_file_info *fi) {
