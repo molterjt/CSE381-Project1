@@ -70,7 +70,11 @@ void getMovieInfo(const char * path, std::string &buf) {
     
     buf += "title = " + std::string(path) + "\n";
     buf += "tagline = " + std::string(tagline) + "\n";
-    buf += "genre = " + genre + "\n"; 
+    buf += "genre = " + genre + "\n";
+    buf += "release_date = " + release_date + "\n";
+    buf += "budget = $" + budget + "\n";
+    buf += "revenue = $" + revenue + "\n";
+
     }
 }
 
